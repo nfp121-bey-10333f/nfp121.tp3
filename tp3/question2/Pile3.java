@@ -13,64 +13,118 @@ import java.util.Vector;
  */
 public class Pile3 implements PileI {
 
-	private Vector<Object> v;
+    private Vector<Object> v;
+        /** la capacite de la pile */
+        private int capacite;
+        
+        /** la taille actuelle de la pile */
+        private int taille;
+    
+    public Pile3() {
+        this(CAPACITE_PAR_DEFAUT);
+    }
 
-	public Pile3() {
-		this(0);
-	}
+    public Pile3(int taille) {
+        // traiter le cas <=0
+        // à compléter
+        if (taille <= 0)
+            taille = CAPACITE_PAR_DEFAUT;
+        this.v = new Vector<Object>(taille);
+        this.capacite = taille;
+        this.taille =  0;
+    }
 
-	public Pile3(int taille) {
-		// traiter le cas <=0
-		// à compléter
-	}
+    public void empiler(Object o) throws PilePleineException {
+        if (estPleine())
+            throw new PilePleineException();
+        this.v.addElement(o);
+        this.taille ++;
+    }
 
-	public void empiler(Object o) throws PilePleineException {
-		// à compléter
-	}
+    public Object depiler() throws PileVideException {
+        if (estVide())
+            throw new PileVideException();
+        
+        this.taille --;
+        return this.v.remove(taille);
+    }
 
-	public Object depiler() throws PileVideException {
-		// à compléter
-		return null;
-	}
+    public Object sommet() throws PileVideException {
+        // a completer
+        if(estVide())
+            throw new PileVideException();
+        return this.v.lastElement();
+    }
 
-	public Object sommet() throws PileVideException {
-		// à compléter
-		return null;
-	}
+    public int taille() {
+        // à compléter
+        return this.taille;
+    }
 
-	public int taille() {
-		// à compléter
-		return -1;
-	}
+    public int capacite() {
+        // à compléter
+        return this.capacite;
+    }
 
-	public int capacite() {
-		// à compléter
-		return -1;
-	}
+    public boolean estVide() {
+        // a completer
+        return taille==0;
+    }
 
-	public boolean estVide() {
-		// à compléter
-		return false;
-	}
+    /**
+     * Effectue un test de l'etat de la pile.
+     * 
+     * @return vrai si la pile est pleine, faux autrement
+     */
+    public boolean estPleine() {
+        // a completer
+        return taille==capacite;
+    }
 
-	public boolean estPleine() {
-		// à compléter
-		return false;
-	}
+    public String toString() {
+        StringBuffer sb = new StringBuffer("[");
 
-	public String toString() {
-		// à compléter
-		return "";
-	}
+        for (int i = taille - 1; i >= 0; i--) {
+            sb.append(this.v.get(i).toString());
+            if (i > 0)
+                sb.append(", ");
+        }
+        
+        sb.append("]");
+        
+        return sb.toString();
+    }
 
-	public boolean equals(Object o) {
-		// à compléter
-		return false;
-	}
+   public boolean equals(Object o) {
+        // a completer
+        if (!(o instanceof Pile3)) {
+            return false;
+        }
+        
+        Pile3 newpile = (Pile3) o;
+        
+        if (newpile.taille() == 0 && this.taille() == 0)
+            return true;
 
-	// fonction fournie
-	public int hashCode() {
-		return toString().hashCode();
-	}
+        if (newpile.taille() == 0 || this.taille() == 0)
+            return false;
+            
+        if (this.capacite() != newpile.capacite() 
+            || this.taille() != newpile.taille()) {
+                return false;
+        }
+        
+        for (int i = taille - 1; i >= 0; i--){
+            if (newpile.v.get(i) != this.v.get(i) )
+                return false;
+        }
+  
+        return true;
+    }
+
+    // fonction fournie
+    public int hashCode() {
+        return toString().hashCode();
+    }
 
 }
